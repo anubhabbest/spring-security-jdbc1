@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
@@ -28,6 +29,7 @@ public class SecurityConfguration {
                         .requestMatchers("/h2-console/**").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/user/**").hasRole("USER")
+                        .requestMatchers("/register/**").permitAll()
                         .requestMatchers("/").permitAll())
                 .formLogin().and()
                 .csrf().disable().headers().frameOptions().disable();  // Allow frames for H2 Console;
@@ -55,12 +57,12 @@ public class SecurityConfguration {
 //        return new InMemoryUserDetailsManager(userDetails, user2, user3);
 //    }
 
-//    @Bean
-//    public AuthenticationProvider authenticationProvider() {
-//        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-//        provider.setPasswordEncoder(NoOpPasswordEncoder.getInstance());
-//        provider.setUserDetailsService(userDetailsService);
-//        System.out.println(provider.toString());
-//        return provider;
-//    }
+    @Bean
+    public AuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setPasswordEncoder(new BCryptPasswordEncoder(12));
+        provider.setUserDetailsService(userDetailsService);
+        System.out.println(provider.toString());
+        return provider;
+    }
 }
