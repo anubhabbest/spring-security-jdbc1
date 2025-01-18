@@ -24,13 +24,13 @@ public class SecurityConfguration {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf().disable().headers().frameOptions().disable()  // Allow frames for H2 Console
-                .and().authorizeHttpRequests(auth -> auth
-                .requestMatchers("/admin/**").hasRole("ADMIN")
-                .requestMatchers("/user/**").hasRole("USER")
-                .requestMatchers("/h2-console/**").permitAll()
-                .requestMatchers("/").permitAll()
-        ).httpBasic(Customizer.withDefaults()).formLogin();
+        http.authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/h2-console/**").permitAll()
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/user/**").hasRole("USER")
+                        .requestMatchers("/").permitAll())
+                .formLogin().and()
+                .csrf().disable().headers().frameOptions().disable();  // Allow frames for H2 Console;
         return http.build();
     }
 
@@ -55,12 +55,12 @@ public class SecurityConfguration {
 //        return new InMemoryUserDetailsManager(userDetails, user2, user3);
 //    }
 
-    @Bean
-    public AuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setPasswordEncoder(NoOpPasswordEncoder.getInstance());
-        provider.setUserDetailsService(userDetailsService);
-        System.out.println(provider.toString());
-        return provider;
-    }
+//    @Bean
+//    public AuthenticationProvider authenticationProvider() {
+//        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+//        provider.setPasswordEncoder(NoOpPasswordEncoder.getInstance());
+//        provider.setUserDetailsService(userDetailsService);
+//        System.out.println(provider.toString());
+//        return provider;
+//    }
 }
