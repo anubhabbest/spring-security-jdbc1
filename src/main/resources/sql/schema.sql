@@ -5,7 +5,7 @@
 --);
 
 create table users(id integer primary key, username text, password text);
-insert into users values(1, 'anu', '{noop}anu@123'),(2,'varun','{noop}varun@123');
+insert into users values(1, 'anu', 'anu@123'),(2,'varun','varun@123');
 select * from users
 
 --create table authorities (
