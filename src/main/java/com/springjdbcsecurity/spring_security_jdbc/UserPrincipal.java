@@ -17,6 +17,10 @@ public class UserPrincipal implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singleton(new SimpleGrantedAuthority("ROLE_USER"));
+//        if you want to assign multiple authorities, it would be like:
+//        Arrays.stream(user.getRoles().split(","))
+//                .map(SimpleGrantedAuthority::new)
+//                .collect(Collectors.toList())
     }
 
     @Override
